@@ -29,6 +29,7 @@ namespace Memorija_Igrica
         static int izabrano;
         int previous;
         int score;
+        int hits;
         public static TextBlock txt;
         public static TextBlock prevTxt;
         public static Rectangle rec;
@@ -40,6 +41,7 @@ namespace Memorija_Igrica
             izabrano = 0;
             previous = -1;
             score = 0;
+            hits = 0;
             int counter = 0;
             for(int i = 0; i < 5; i++)
             {
@@ -120,13 +122,17 @@ namespace Memorija_Igrica
                     }
                     stopWatch = new Stopwatch();
                     stopWatch.Start();
-
                     rec.Fill = Brushes.DarkGreen;
                     prevRec.Fill = Brushes.DarkGreen;
                     tabla.Polja[previous].Pogodjeno = true;
                     tabla.Polja[gNum].Pogodjeno = true;
                     tabla.Game = true;
                     Score.Text = score.ToString();
+                    hits++;
+                    if (hits == 10)
+                    {
+                        MessageBox.Show("Pobedili ste!", "Pobeda");
+                    }
                 } else
                 {
                     System.Timers.Timer aTimer = new System.Timers.Timer(1000);
@@ -174,6 +180,16 @@ namespace Memorija_Igrica
                 tabla.Polja[i].Broj = nums[randomNum];
                 nums.RemoveAt(randomNum);
             }
+        }
+
+        private void EndButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (stopWatch != null)
+            {
+                stopWatch.Stop();
+            }
+            tabla.Game = false;
+            EndButton.IsEnabled = false;
         }
     }
 }
