@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using System.Timers;
 
 namespace Memorija_Igrica
 {
@@ -26,6 +27,10 @@ namespace Memorija_Igrica
         Tabla tabla = new Tabla();
         static int izabrano;
         int previous;
+        public static TextBlock txt;
+        public static TextBlock prevTxt;
+        public static Rectangle rec;
+        public static Rectangle prevRec;
         public MainWindow()
         {
             InitializeComponent();
@@ -72,14 +77,15 @@ namespace Memorija_Igrica
             string gName = (sender as Grid).Name;
             int gNum = int.Parse(gName.Substring(1, gName.Length-1));
             if (tabla.Polja[gNum].Pogodjeno || gNum == previous) return;
-            TextBlock txt = this.FindName($"t{gNum}") as TextBlock;
-            Rectangle rec = this.FindName($"r{gNum}") as Rectangle;
+            txt = this.FindName($"t{gNum}") as TextBlock;
+            rec = this.FindName($"r{gNum}") as Rectangle;
             txt.Text = tabla.Polja[gNum].Broj.ToString();
             rec.Fill = Brushes.LightGreen;
             izabrano++;
             if(izabrano == 2)
             {
-                Rectangle prevRec = this.FindName($"r{previous}") as Rectangle;
+                prevRec = this.FindName($"r{previous}") as Rectangle;
+                prevTxt = this.FindName($"t{previous}") as TextBlock;
                 tabla.Game = false;
                 if(tabla.Polja[previous].Broj == tabla.Polja[gNum].Broj)
                 {
@@ -87,19 +93,33 @@ namespace Memorija_Igrica
                     prevRec.Fill = Brushes.DarkGreen;
                     tabla.Polja[previous].Pogodjeno = true;
                     tabla.Polja[gNum].Pogodjeno = true;
+                    tabla.Game = true;
                 } else
                 {
-                    // Thread.Sleep(1000);
-                    rec.Fill = Brushes.White;
-                    prevRec.Fill = Brushes.White;
+                    System.Timers.Timer aTimer = new System.Timers.Timer(1000);
+                    aTimer.Elapsed += OnTimedEvent;
+                    aTimer.Enabled = true;
+                    aTimer.AutoReset = false;
                 }
-                tabla.Game = true;
                 previous = -1;
                 izabrano = 0;
             } else
             {
                 previous = gNum;
             }
+        }
+
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            tabla.Game = true;
+            this.Dispatcher.Invoke(() =>
+            {
+                rec.Fill = Brushes.White;
+                prevRec.Fill = Brushes.White;
+                txt.Text = "?";
+                prevTxt.Text = "?";
+            });
+            
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
