@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
 using System.Timers;
+using System.Diagnostics;
 
 namespace Memorija_Igrica
 {
@@ -27,15 +28,18 @@ namespace Memorija_Igrica
         Tabla tabla = new Tabla();
         static int izabrano;
         int previous;
+        int score;
         public static TextBlock txt;
         public static TextBlock prevTxt;
         public static Rectangle rec;
         public static Rectangle prevRec;
+        public static Stopwatch stopWatch;
         public MainWindow()
         {
             InitializeComponent();
             izabrano = 0;
             previous = -1;
+            score = 0;
             int counter = 0;
             for(int i = 0; i < 5; i++)
             {
@@ -73,6 +77,9 @@ namespace Memorija_Igrica
 
         private void Gr_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            
+           
+
             if (!tabla.Game) return;
             string gName = (sender as Grid).Name;
             int gNum = int.Parse(gName.Substring(1, gName.Length-1));
@@ -89,11 +96,37 @@ namespace Memorija_Igrica
                 tabla.Game = false;
                 if(tabla.Polja[previous].Broj == tabla.Polja[gNum].Broj)
                 {
+                    if(stopWatch != null)
+                    {
+                        stopWatch.Stop();
+                        int duration = (int) stopWatch.ElapsedMilliseconds / 1000;
+                        if(duration < 5)
+                        {
+                            score += 10;
+                        } else if(duration < 15)
+                        {
+                            score += 5;
+                        } else if(duration < 30)
+                        {
+                            score += 3;
+                        } else
+                        {
+                            score++;
+                        }
+                        
+                    } else
+                    {
+                        score++;
+                    }
+                    stopWatch = new Stopwatch();
+                    stopWatch.Start();
+
                     rec.Fill = Brushes.DarkGreen;
                     prevRec.Fill = Brushes.DarkGreen;
                     tabla.Polja[previous].Pogodjeno = true;
                     tabla.Polja[gNum].Pogodjeno = true;
                     tabla.Game = true;
+                    Score.Text = score.ToString();
                 } else
                 {
                     System.Timers.Timer aTimer = new System.Timers.Timer(1000);
@@ -107,6 +140,9 @@ namespace Memorija_Igrica
             {
                 previous = gNum;
             }
+
+
+            
         }
 
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
