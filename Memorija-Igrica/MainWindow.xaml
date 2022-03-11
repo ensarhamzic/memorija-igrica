@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Memorija_Igrica"
         mc:Ignorable="d"
-        Title="Igrica memorije" Height="450" Width="500">
+        Title="Igrica memorije" Height="450" Width="500" ResizeMode="CanMinimize">
     <Grid x:Name="myGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -22,12 +22,18 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="30">
-            <Button x:Name="StartButton" Click="StartButton_Click" Content="Pocni" Padding="20,0,20,0"/>
-            <Button x:Name="EndButton" Click="EndButton_Click" Content="Zavrsi" Padding="20,0,20,0" Margin="20,0,0,0"/>
-            <StackPanel Orientation="Horizontal" Margin="10, 0, 0,0" VerticalAlignment="Center">
-                <TextBlock FontWeight="Bold" FontSize="15" >Poeni: </TextBlock>
-                <TextBlock x:Name="Score" FontWeight="Bold" FontSize="15" Margin="5,0,0,0">0</TextBlock>
+        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="StartButton" Click="StartButton_Click" Content="Pocni" Padding="20,0,20,0" Margin="30"/>
+            <Button x:Name="EndButton" Click="EndButton_Click" Content="Zavrsi" Padding="20,0,20,0"  Margin="20,30,0,30"/>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="10, 0, 0,0" VerticalAlignment="Center">
+                    <TextBlock FontWeight="Bold" FontSize="15" >Poeni: </TextBlock>
+                    <TextBlock x:Name="Score" FontWeight="Bold" FontSize="15" Margin="5,0,0,0">0</TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="10, 0, 0,0" VerticalAlignment="Center">
+                    <TextBlock FontWeight="Bold" FontSize="15" >Vreme:</TextBlock>
+                    <TextBlock x:Name="Time" FontWeight="Bold" FontSize="15" Margin="5,0,0,0">0</TextBlock>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

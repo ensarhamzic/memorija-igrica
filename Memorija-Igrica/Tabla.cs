@@ -9,7 +9,7 @@ namespace Memorija_Igrica
     internal class Tabla
     {
         private Polje[] polja;
-        private bool game;
+        private bool game; // da li je dozvoljeno da se igra
 
         public bool Game
         {

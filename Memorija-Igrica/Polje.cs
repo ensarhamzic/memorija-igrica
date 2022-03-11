@@ -9,20 +9,17 @@ namespace Memorija_Igrica
     internal class Polje
     {
         private int broj;
-        private string boja;
-        private bool pogodjeno;
+        private bool pogodjeno; // Da li je polje i dalje u igri
 
         public Polje()
         {
             broj = 0;
-            boja = "White";
             pogodjeno = false;
         }
 
-        public Polje(int broj, string boja)
+        public Polje(int broj)
         {
             this.broj = broj;
-            this.boja = boja;
             pogodjeno = false;
         }
 
@@ -32,11 +29,6 @@ namespace Memorija_Igrica
             set { pogodjeno = value; }
         }
 
-        public string Boja
-        {
-            get { return boja; }
-            set { boja = value; }
-        }
         public int Broj {
             get { return broj; } 
             set { broj = value; }
