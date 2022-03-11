@@ -18,10 +18,6 @@ using System.Diagnostics;
 
 namespace Memorija_Igrica
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    /// 
 
     public partial class MainWindow : Window
     {
@@ -79,9 +75,6 @@ namespace Memorija_Igrica
 
         private void Gr_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
-           
-
             if (!tabla.Game) return;
             string gName = (sender as Grid).Name;
             int gNum = int.Parse(gName.Substring(1, gName.Length-1));
@@ -131,7 +124,7 @@ namespace Memorija_Igrica
                     hits++;
                     if (hits == 10)
                     {
-                        MessageBox.Show("Pobedili ste!", "Pobeda");
+                        MessageBox.Show($"Pobedili ste! Osvojili ste {score} poena", "Pobeda");
                     }
                 } else
                 {
