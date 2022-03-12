@@ -39,7 +39,7 @@ namespace Memorija_Igrica
         int score;
         int hits; // Broj pogodaka
         int time; // Vreme do kraja igre
-        System.Windows.Forms.Timer timer; // Tajmer za time
+        System.Timers.Timer timer; // Tajmer za time
         TextBlock txt; // textblock za trenutni potez
         TextBlock prevTxt; // textblock proslog poteza
         Rectangle rec; // kvadrat trenutnog poteza
@@ -148,7 +148,7 @@ namespace Memorija_Igrica
                         MessageBox.Show($"Pobedili ste! Osvojili ste {score} poena", "Pobeda");
                         EndButton.IsEnabled = false;
                         StartButton.IsEnabled = true;
-                        timer.Stop();
+                        timer.Enabled = false;
                     }
                 } else
                 {
@@ -182,14 +182,23 @@ namespace Memorija_Igrica
         }
 
         // Funkcija koja svake sekunde smanjuje time za 1 i po isteku vremena zavrsava igru
-        private void TimerTick(object sender, EventArgs e)
+        private void TimerTick(object source, ElapsedEventArgs e)
         {
-            Time.Text = (--time).ToString();
+            this.Dispatcher.Invoke(() =>
+            {
+                Time.Text = Convert.ToString((--time));
+            });
+            
             if(time == 0)
             {
-                timer.Stop();
+                timer.Enabled = false;
+                tabla.Game = false;
                 MessageBox.Show("Vreme je isteklo. Izgubili ste!", "Vreme isteklo");
-                EndButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent)); // Simulacija klika
+                this.Dispatcher.Invoke(() =>
+                {
+                    EndButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent)); // Simulacija klika
+                });
+                
             }
             
         }
@@ -197,10 +206,10 @@ namespace Memorija_Igrica
         // Start igre - resetujemo sve i random rasporedimo brojeve
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            timer = new System.Windows.Forms.Timer();
-            timer.Interval = (1000); // Na svaku 1000ms tj 1s
-            timer.Tick += new EventHandler(TimerTick);
-            timer.Start();
+            timer = new System.Timers.Timer(1000); // Na svakih 1000ms tj 1s
+            timer.Elapsed += TimerTick;
+            timer.AutoReset = true;
+            timer.Enabled = true;
             time = 90; // Trajanje igre
             izabrano = 0;
             previous = -1;
@@ -243,7 +252,7 @@ namespace Memorija_Igrica
             tabla.Game = false;
             EndButton.IsEnabled = false;
             StartButton.IsEnabled = true;
-            timer.Stop();
+            timer.Enabled = false;
         }
     }
 }
