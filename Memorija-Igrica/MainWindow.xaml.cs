@@ -145,10 +145,10 @@ namespace Memorija_Igrica
                     // Pobeda
                     if (hits == 10)
                     {
-                        MessageBox.Show($"Pobedili ste! Osvojili ste {score} poena", "Pobeda");
-                        EndButton.IsEnabled = false;
-                        StartButton.IsEnabled = true;
                         timer.Enabled = false;
+                        EndButton.IsEnabled = false;
+                        MessageBox.Show($"Pobedili ste! Osvojili ste {score} poena", "Pobeda");
+                        StartButton.IsEnabled = true;
                     }
                 } else
                 {
